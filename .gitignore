@@ -1,0 +1,21 @@
+# MacOS
+.DS_Store
+
+# Unit tests
+tests
+
+# VSCode
+.vscode
+
+# Debugging
+s_long
+so_long.dSYM
+
+# Object Files
+*.o
+
+# Assets
+textures/mockup.png
+
+# Notes
+notes.md
