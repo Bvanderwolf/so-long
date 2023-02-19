@@ -4,6 +4,7 @@ A project done at Codam University where the goal was to create a game using the
 In the game you play as a knight who's goal it is to collect all gold and a key before running to the exit. In the meanwhile, enemies are walking around to prevent you from obtaining your collectables and finishing the game.
 
 The gameplay is generated based on a text file inputted when starting. Some text files for different use cases are already added to the "maps" folder but you are able to create your own according to the following rules:
+- The file has to have the .ber file extension
 - The map has to be constructed with 3 components: walls, collectibles, and free space.
 - The map has to be rectangular
 - The map can be composed of only these 8 characters:
