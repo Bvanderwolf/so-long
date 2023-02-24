@@ -21,3 +21,15 @@ The gameplay is generated based on a text file inputted when starting. Some text
 - Every collectable (C) and the exit (E) has to be reachable from the players position.
 
 Thanks to [Leon](https://github.com/W2Wizard) and [Codam](https://www.codam.nl/) for providing the [MLX42 graphics library](https://github.com/codam-coding-college/MLX42) with some handy functions.
+
+### usage
+
+To run the excecutable you can use the following command:
+```
+./so_long maps/{name_of_map}
+```
+
+An example using one of the existing maps:
+```
+./so_long maps/weirdo.ber
+```
