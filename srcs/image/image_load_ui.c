@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/13 16:18:49 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:45:52 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 15:07:12 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "ft_printf.h"
 #include "MLX42/MLX42.h"
 
-static bool	img_load_panel(t_context *gc)
+static bool	load_panel_images(t_context *gc)
 {
 	const char		*path = "textures/ui_panel_tiles.png";
 	char *const		names[] = {
@@ -25,91 +25,60 @@ static bool	img_load_panel(t_context *gc)
 		IMG_PANEL_BOTTOM_LEFT, IMG_PANEL_BOTTOM, IMG_PANEL_BOTTOM_RIGHT,
 		NULL,
 	};
-	mlx_texture_t	*tex;
+	mlx_texture_t	*texture;
 	int				i;
-	
-	tex = mlx_load_png(path);
-	if (tex == NULL)
+
+	texture = mlx_load_png(path);
+	if (texture == NULL)
 		return (false);
 	i = 0;
 	while (names[i] != NULL)
 	{
-		if (!load_tile(gc, tex, i + 1, names[i]))
+		if (!load_tile(gc, texture, i + 1, names[i]))
 			return (false);
 		i++;
 	}
+	mlx_delete_texture(texture);
 	return (true);
 }
 
-static bool	img_load_panel_knob(t_context *gc)
+static bool	load_panel_knob_images(t_context *gc)
 {
 	const char		*path = "textures/ui_panel_knob.png";
-	mlx_texture_t	*tex;
-	
-	tex = mlx_load_png(path);
-	if (tex == NULL)
+	mlx_texture_t	*texture;
+
+	texture = mlx_load_png(path);
+	if (texture == NULL)
 		return (false);
-	return (load_tile(gc, tex, 1, IMG_PANEL_KNOB));
-}
-
-static bool	img_load_numbers_and_equals(t_context *gc, mlx_texture_t *tex)
-{
-	char			name[2];
-	const int		max = NUMBER_AND_EQUAL_CHAR_COUNT;
-	int				i;
-
-	i = 0;
-	name[1] = '\0';
-	while (i <= max)
-	{
-		name[0] = (i + '0');
-		if (!load_text(gc, tex, (i + 49), name))
-			return (false);
-		i++;
-	}
+	if (!load_tile(gc, texture, 1, IMG_PANEL_KNOB))
+		return (false);
+	mlx_delete_texture(texture);
 	return (true);
 }
 
-static bool	img_load_alphabet(t_context *gc, mlx_texture_t *tex)
-{
-	char			name[2];
-	const int		max = ALPHA_CHAR_COUNT;
-	int				i;
-
-	i = 0;
-	name[1] = '\0';
-	while (i < max)
-	{
-		name[0] = (i + 'a');
-		if (!load_text(gc, tex, i + 98, name))
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-static bool	img_load_text(t_context *gc)
+static bool	load_text_images(t_context *gc)
 {
 	const char		*path = "textures/alphabet.png";
-	mlx_texture_t	*tex;
-	
-	tex = mlx_load_png(path);
-	if (tex == NULL)
+	mlx_texture_t	*texture;
+
+	texture = mlx_load_png(path);
+	if (texture == NULL)
 		return (false);
-	if (!img_load_alphabet(gc, tex))
+	if (!load_alphabet_images(gc, texture))
 		return (false);
-	if (!img_load_numbers_and_equals(gc, tex))
+	if (!load_numbers_and_equals_images(gc, texture))
 		return (false);
+	mlx_delete_texture(texture);
 	return (true);
 }
 
 bool	load_ui_images(t_context *gc)
 {
-	if (!img_load_text(gc))
+	if (!load_text_images(gc))
 		return (false);
-	if (!img_load_panel(gc))
+	if (!load_panel_images(gc))
 		return (false);
-	if (!img_load_panel_knob(gc))
+	if (!load_panel_knob_images(gc))
 		return (false);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/13 12:06:29 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:59:48 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:02:04 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,47 +40,19 @@ static void	update_slime_walk_decision(t_context *gc, int map_x, int map_y)
 		return ;
 	slime->current_decision_time = 0.0;
 	direction = get_random_direction(gc->map, slime->map_xy);
-	if (is_invalid_direction(direction) 
+	if (is_invalid_direction(direction)
 		|| walks_into_enemy(gc, slime->world_xy, direction))
 		return ;
 	walk_set_target(slime->walk, direction, slime->world_xy);
-	if (vector2_equals_xy(direction, 1, 0) || vector2_equals_xy(direction, -1, 0))
+	if (vector2_equals_xy(direction, 1, 0)
+		|| vector2_equals_xy(direction, -1, 0))
 			slime->look_direction = direction;
-}
-
-static void	update_slime_walk_animation(t_context *gc, int map_x, int map_y)
-{
-	const char	run_prefix[] = "slime_run";
-	char		run_name[MAX_IMG_NAME_SIZE + 1];
-	t_enemy		*slime;
-	t_animation		*active_anim;
-
-	slime = get_enemy(gc, vector2_new(map_x, map_y));
-	if (!walk_is_active(slime->walk))
-		return ;
-	active_anim = get_active_animation(slime->animatable->animations);
-	if (ft_strncmp(active_anim->name, run_prefix, sizeof(run_prefix) - 1) != 0)
-	{
-		animation_disable(active_anim);
-		append_animation_suffix(slime->look_direction, run_prefix, run_name);
-		set_active_animation(&(slime->animatable->animations), run_name);
-	}
-}
-
-static void	render_slime_animation(t_context *gc, int map_x, int map_y)
-{
-	t_animatable	*animatable;
-	t_animation			*animation;
-
-	animatable = get_animatable(gc, vector2_new(map_x, map_y));
-	animation = get_active_animation(animatable->animations);
-	update_animation_image(animation);
 }
 
 static void	update_slime_world_position(t_enemy *slime)
 {
 	t_vector2		new_position;
-	t_animation			*animation;
+	t_animation		*animation;
 	t_list			*current_animation;
 
 	new_position = vector2_add(slime->world_xy, slime->walk->direction);

@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/27 11:32:10 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:59:48 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:38:08 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 static void	reset_player_walk_to_idle(t_player *player)
 {
@@ -54,7 +55,7 @@ bool	player_position_hook(t_context *gc, t_position_hook hook)
 static void	update_player_world_position(t_player *player)
 {
 	t_vector2		new_position;
-	t_animation			*animation;
+	t_animation		*animation;
 	t_list			*current_animation;
 
 	new_position = vector2_add(player->world_xy, player->walk->direction);
@@ -71,25 +72,25 @@ static void	update_player_world_position(t_player *player)
 void	update_player_position(t_context *gc)
 {
 	t_player *const	player = gc->player;
-	t_walk *const	walk = gc->player->walk;
-	t_walk *const	target_walk = gc->player->target_walk;
+	t_walk *const	w = gc->player->walk;
+	t_walk *const	tw = gc->player->target_walk;
 
-	if (vector2_equals(walk->target_world_xy, player->world_xy))
+	if (vector2_equals(w->target_world_xy, player->world_xy))
 	{
-		if (walk_is_active(walk))
-		{
-			player->map_xy = world_to_map_position(player->world_xy);
-			player->steps++;
-			player->walk->direction = vector2_new(0, 0);
-			reset_player_walk_to_idle(player);
-			invoke_player_position_update(gc);
-			if (!gc->completed && !vector2_equals(target_walk->target_world_xy, walk->target_world_xy))
-			{
-				walk_set_target(walk, target_walk->direction, gc->player->world_xy);
-				if (vector2_equals_xy(target_walk->direction, 1, 0) || vector2_equals_xy(target_walk->direction, -1, 0))
-					gc->player->look_direction = target_walk->direction;
-			}
-		}
+		if (!walk_is_active(w))
+			return ;
+		player->map_xy = world_to_map_position(player->world_xy);
+		player->steps++;
+		player->walk->direction = vector2_new(0, 0);
+		reset_player_walk_to_idle(player);
+		invoke_player_position_update(gc);
+		if (gc->completed
+			|| vector2_equals(tw->target_world_xy, w->target_world_xy))
+			return ;
+		walk_set_target(w, tw->direction, gc->player->world_xy);
+		if (vector2_equals_xy(tw->direction, 1, 0)
+			|| vector2_equals_xy(tw->direction, -1, 0))
+			gc->player->look_direction = tw->direction;
 	}
 	else
 	{

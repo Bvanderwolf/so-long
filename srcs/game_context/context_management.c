@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 10:55:07 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:48:47 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 15:12:51 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 void	end_game(const char *message, t_context *gc)
 {
 	t_animation	*active_animation;
-	
+
 	if (!load_player_ending(gc))
 		exit_clearing_context(gc);
 	active_animation = get_active_animation(gc->player->animations);
@@ -62,6 +62,8 @@ void	exit_clearing_context(t_context *gc)
 		ft_lstclear(&(gc->enemies), &free_enemy);
 	if (gc->text != NULL)
 		ft_lstclear(&(gc->text), &free);
+	if (gc->effects != NULL)
+		ft_lstclear(&(gc->effects), &free);
 	if (gc->mlx != NULL)
 		mlx_terminate(gc->mlx);
 	free(gc);
@@ -78,6 +80,7 @@ void	game_terminate(t_context *gc)
 	ft_lstclear(&(gc->animatables), &free_animatable);
 	ft_lstclear(&(gc->enemies), &free_enemy);
 	ft_lstclear(&(gc->text), &free);
+	ft_lstclear(&(gc->effects), &free);
 	mlx_terminate(gc->mlx);
 	free(gc);
 }

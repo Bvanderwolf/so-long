@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/12 11:27:03 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:48:47 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 15:16:42 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	render_player_end_effect(void *context)
 {
 	int				new_frame;
 	t_effect *const	effect = context;
-	t_animation			*animation;
+	t_animation		*animation;
 
 	animation = get_active_animation(effect->animatable->animations);
 	new_frame = get_animation_frame(animation);
@@ -34,29 +34,48 @@ static void	render_player_end_effect(void *context)
 	update_animation_image(animation);
 }
 
-bool	load_player_ending(t_context *gc)
+static t_effect	*create_player_end_effect(t_context *gc)
 {
-	const char		*tex_names[] = { "player_end.png", NULL };
+	const char		*tex_names[] = {"player_end.png", NULL};
 	t_effect		*effect;
 	t_animatable	*animatable;
 	t_list			*animatable_item;
-	int32_t			xy[2];
 
 	effect = (t_effect *)malloc(sizeof(t_effect));
 	if (effect == NULL)
 		return (NULL);
-	animatable = create_animatable(gc, gc->player->map_xy, DEFAULT_ANIM_SPEED, tex_names);
+	animatable = create_animatable(gc,
+			gc->player->map_xy,
+			DEFAULT_ANIM_SPEED,
+			tex_names);
 	if (animatable == NULL)
-		return (free(effect), false);
+		return (free(effect), NULL);
 	animatable_item = ft_lstnew(animatable);
 	if (animatable_item == NULL)
-		return (free(effect), free(animatable), false);
+		return (free(effect), free(animatable), NULL);
 	ft_lstadd_back(&(gc->animatables), animatable_item);
-	effect->frames_left = get_active_animation(animatable->animations)->frame_count;
+	effect->frames_left = \
+	get_active_animation(animatable->animations)->frame_count;
 	effect->animatable = animatable;
+	return (effect);
+}
+
+bool	load_player_ending(t_context *gc)
+{
+	t_effect	*effect;
+	t_list		*effect_item;
+	int32_t		xy[2];
+
+	effect = create_player_end_effect(gc);
+	if (effect == NULL)
+		return (false);
+	effect_item = ft_lstnew(effect);
+	if (effect_item == NULL)
+		return (free(effect), false);
+	ft_lstadd_back(&(gc->effects), effect_item);
 	xy[0] = gc->player->world_xy.x;
 	xy[1] = gc->player->world_xy.y;
-	if (!animations_to_window(gc->mlx, animatable->animations, xy))
+	if (!animations_to_window(gc->mlx, effect->animatable->animations, xy))
 		return (false);
 	if (!mlx_loop_hook(gc->mlx, &render_player_end_effect, effect))
 		return (false);

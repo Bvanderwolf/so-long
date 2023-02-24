@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/05 16:38:04 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:59:48 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:30:25 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 static void	update_player_walk_animation(t_player *player)
 {
-	const char	run_prefix[] = "knight_run";
-	char		run_name[MAX_IMG_NAME_SIZE + 1];
+	const char		run_prefix[] = "knight_run";
+	char			run_name[MAX_IMG_NAME_SIZE + 1];
 	t_animation		*active_anim;
 
 	if (!walk_is_active(player->walk))

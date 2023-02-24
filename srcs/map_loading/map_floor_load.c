@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/15 14:58:30 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:47:33 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 14:17:10 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 static void	get_random_default_floor_image_name(char *name_buffer)
 {
-	float perc;
+	float	perc;
 
 	perc = rand01();
 	if (perc < 0.15f)

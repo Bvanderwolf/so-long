@@ -6,57 +6,17 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/14 14:50:31 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:02:17 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 13:18:50 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include "so_long.h"
 #include "so_long_img.h"
-#include "ft_printf.h"
-
-static bool	place_number(t_context *gc, const char *name, int x, int y)
-{
-	t_list	*text;
-	t_text	*number;
-
-	number = create_text(gc, name, "0");
-	if (number == NULL)
-		return (false);
-	text = ft_lstnew(number);
-	if (text == NULL)
-		return (free(number), false);
-	number->world_xy = vector2_new(x, y);
-	ft_lstadd_back(&(gc->text), text);
-	return (update_window_with_text(gc, number));
-}
-
-static bool	place_text(t_context *gc, const char *text, int margin)
-{
-	const int	length = ft_strlen(text);
-	mlx_image_t	*img;
-	char		name[2];
-	int			x;
-	int			i;
-
-	i = 0;
-	name[1] = '\0';
-	while (i < length)
-	{
-		name[0] = text[i];
-		img = find_mlx_image(gc->images, name);
-		x = TEXT_RIGHT_OFFSET + (i * (TEXT_SPACING));
-		if (mlx_image_to_window(gc->mlx, img, x, margin) == -1)
-			return (false);
-		i++;
-	}
-	x = TEXT_RIGHT_OFFSET + (i * (TEXT_SPACING));
-	return (place_number(gc, text, x, margin));
-}
 
 static bool	place_textual_info(t_context *gc)
 {
-	int margin;
+	int	margin;
 
 	margin = PANEL_MARGIN + PANEL_MARGIN + PANEL_MARGIN + PANEL_PADDING;
 	if (!place_text(gc, COLLECTED_TEXT, margin))
@@ -71,7 +31,7 @@ static bool	place_panel_knob(t_context *gc)
 	int			x;
 	int			y;
 	mlx_image_t	*img;
-	
+
 	x = (gc->mlx->width * 0.5) - (TILE_SIZE * 0.5);
 	y = PANEL_MARGIN;
 	img = find_mlx_image(gc->images, IMG_PANEL_KNOB);
@@ -103,7 +63,7 @@ bool	place_panel_tiles(t_context *gc)
 {
 	mlx_image_t		*img;
 	t_layout		layout;
-	
+
 	layout.width = (gc->mlx->width - TILE_SIZE) / TILE_SIZE;
 	layout.height = 3;
 	layout.y = 0;
@@ -114,9 +74,9 @@ bool	place_panel_tiles(t_context *gc)
 		{
 			img = find_panel_image(gc, layout);
 			if (mlx_image_to_window(
-				gc->mlx,
-				img, PANEL_MARGIN + (layout.x * TILE_SIZE),
-				PANEL_MARGIN + (layout.y * TILE_SIZE)
+					gc->mlx,
+					img, PANEL_MARGIN + (layout.x * TILE_SIZE),
+					PANEL_MARGIN + (layout.y * TILE_SIZE)
 				) == -1)
 				return (false);
 			layout.x++;

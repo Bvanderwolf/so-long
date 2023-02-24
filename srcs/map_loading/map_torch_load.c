@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/28 11:06:16 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:48:39 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 14:08:32 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@
 
 static bool	place_torch(t_context *gc, int map_x, int map_y)
 {
-	const char		*tex_names[] = { "torch_light.png", NULL };
+	const char		*tex_names[] = {"torch_light.png", NULL};
 	t_animatable	*animatable;
 	t_list			*animatable_item;
 	int32_t			xy[2];
 	t_vector2		world_position;
-	float			animation_speed;
 
-	animation_speed = rand_minmax(0.8f, 1.0f);
-	animatable = create_animatable(gc, vector2_new(map_x, map_y), animation_speed, tex_names);
+	animatable = create_animatable(gc,
+			vector2_new(map_x, map_y),
+			rand_minmax(0.8f, 1.0f),
+			tex_names);
 	if (animatable == NULL)
 		return (false);
 	animatable_item = ft_lstnew(animatable);

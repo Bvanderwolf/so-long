@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/12 16:12:00 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:45:38 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:51:23 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ static bool	img_load_exit(t_context *gc, mlx_texture_t *tex)
 {
 	t_image			*img;
 	t_list			*img_item;
+	uint32_t		xy[2];
 
-	img = load_img_xy(gc->mlx, tex, (uint32_t[]){TILE_SIZE, TILE_SIZE * 3}, TILE_SIZE);
+	xy[0] = TILE_SIZE;
+	xy[1] = TILE_SIZE * 3;
+	img = load_img_xy(gc->mlx, tex, xy, TILE_SIZE);
 	if (img == NULL)
 	{
 		ft_printf("Failed to load exit images from texture\n");
@@ -59,9 +62,11 @@ bool	load_tile_images(t_context *gc)
 	tex = mlx_load_png(path);
 	if (tex == NULL)
 		return (ft_printf("Failed to load %s texture\n", path), false);
-	if (!load_floor_images(gc, tex) || !load_wall_images(gc, tex) || !load_prop_images(gc, tex))
-		return (mlx_delete_texture(tex), false);
-	if (!img_load_exit(gc, tex) || !img_load_collectables(gc, tex))
+	if (!load_floor_images(gc, tex)
+		|| !load_wall_images(gc, tex)
+		|| !load_prop_images(gc, tex)
+		|| !img_load_exit(gc, tex)
+		|| !img_load_collectables(gc, tex))
 		return (mlx_delete_texture(tex), false);
 	mlx_delete_texture(tex);
 	return (true);

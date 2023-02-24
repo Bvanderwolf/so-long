@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/28 10:09:31 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:48:39 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 14:16:54 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static t_image	*get_banner_image(t_context *gc)
 {
-	float perc;
+	float	perc;
 
 	perc = rand() / (float)RAND_MAX;
 	if (perc > BANNER_SPAWN_PERC)
@@ -33,7 +33,7 @@ static t_prop_info	get_non_wall_prop_info(t_context *gc, int x, int y)
 {
 	t_prop_info		info;
 	t_map *const	map = gc->map;
-	
+
 	if (is_banner(map, x, y))
 	{
 		info.img = get_banner_image(gc);
@@ -64,7 +64,7 @@ static bool	place_non_wall_prop_tile(t_context *gc, int map_x, int map_y)
 		) != -1);
 }
 
-static bool place_non_animatable_props(t_context *gc)
+static bool	place_non_animatable_props(t_context *gc)
 {
 	char **const	data = gc->map->data;
 	int				x;

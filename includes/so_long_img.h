@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:51:45 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:45:52 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:55:54 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@
 # define COLLECTED_TEXT "collected:"
 # define STEPS_TEXT "steps:"
 
-# define PANEL_MARGIN TILE_SIZE * 0.45
-# define PANEL_PADDING TEXT_SIZE * 0.25
-# define PANEL_TEXT_SPACING TEXT_SIZE * 0.35
-# define TEXT_SPACING TEXT_SIZE * 0.55
-# define TEXT_RIGHT_OFFSET PANEL_MARGIN + PANEL_PADDING + PANEL_TEXT_SPACING
+# define PANEL_MARGIN 15
+# define PANEL_PADDING 5
+# define PANEL_TEXT_SPACING 6
+# define TEXT_SPACING 11
+# define TEXT_RIGHT_OFFSET 26
 
 # define IMG_WALL "wall"
 # define IMG_EXIT "exit"
@@ -83,7 +83,7 @@
 # define MAX_TEXT_LENGTH 100
 # define ALPHA_CHAR_COUNT 26
 # define NUMBER_AND_EQUAL_CHAR_COUNT 10
-# define TEXT_CHAR_COUNT ALPHA_CHAR_COUNT + NUMBER_AND_EQUAL_CHAR_COUNT
+# define TEXT_CHAR_COUNT 36
 
 /// @brief defines an image used in the game exposing its name and mlx image.
 typedef struct s_image
@@ -112,36 +112,52 @@ typedef struct s_text
 
 typedef void	(*t_img_unload)(mlx_t *, mlx_image_t *);
 
-t_vector2		number_coordinates(mlx_texture_t *tex, int num, int s);
+typedef void	(*t_tile_load)(t_context *gc, mlx_texture_t *texture, \
+int number, char *name);
+
+t_vector2		number_coordinates(mlx_texture_t *texture, \
+int number, int size);
 const char		*image_path_to_name(const char *path);
-void			sequence_name(const char *base, char *name, int i, size_t *l);
+void			sequence_name(const char *base, char *name, \
+int i, size_t *length);
 
 mlx_image_t		*find_mlx_image(t_list *images, char *name);
 t_image			*find_image(t_list *images, char *name);
 mlx_instance_t	*find_instance_xy(t_list *images, int x, int y);
 
-t_text			*create_text(t_context *gc, const char *name, const char *value);
+t_text			*create_text(t_context *gc, const char *name, \
+const char *value);
 t_text			*find_text(t_list *text, const char *name);
 void			update_text_value(t_text *text, const char *value);
 bool			update_window_with_text(t_context *gc, t_text *text);
 
-t_image			*load_img_xy(mlx_t *mlx, mlx_texture_t *t, uint32_t xy[2], int s);
-t_image			*load_img_number(mlx_t *mlx, mlx_texture_t *t, int n, int s);
-bool			load_tile_sheet(t_context *gc, const char *n, mlx_texture_t *t, int l);
-bool			load_tile(t_context *gc, mlx_texture_t *tex, int n, char *name);
-bool			load_text(t_context *gc, mlx_texture_t *tex, int n, char *name);
-bool			load_sheets_at_paths(t_context *gc, const char *p[], int length);
+t_image			*load_img_xy(mlx_t *mlx, mlx_texture_t *texture, \
+uint32_t xy[2], int size);
+t_image			*load_img_number(mlx_t *mlx, mlx_texture_t *texture, \
+int number, int size);
+bool			load_tile_sheet(t_context *gc, const char *name, \
+mlx_texture_t *texture, int sheet_length);
+bool			load_tile(t_context *gc, mlx_texture_t *texture, \
+int number, char *name);
+bool			load_text(t_context *gc, mlx_texture_t *texture, \
+int number, char *name);
+bool			load_sheets_at_paths(t_context *gc, const char *paths[], \
+int sheet_length);
+
+bool			load_numbers_and_equals_images(t_context *gc, \
+mlx_texture_t *texture);
+bool			load_alphabet_images(t_context *gc, mlx_texture_t *texture);
 
 bool			load_player_image(t_context *gc);
 bool			load_tile_images(t_context *gc);
-bool			load_wall_images(t_context *gc, mlx_texture_t *tex);
-bool			load_floor_images(t_context *gc, mlx_texture_t *tex);
-bool			load_prop_images(t_context *gc, mlx_texture_t *tex);
+bool			load_wall_images(t_context *gc, mlx_texture_t *texture);
+bool			load_floor_images(t_context *gc, mlx_texture_t *texture);
+bool			load_prop_images(t_context *gc, mlx_texture_t *texture);
 bool			load_enemy_images(t_context *gc);
 bool			load_ui_images(t_context *gc);
 
 void			unload_images(t_context *gc, t_img_unload unload);
 bool			load_images(t_context *gc);
-void			free_mlx_img(mlx_t *mlx, mlx_image_t *img);
+void			free_mlx_img(mlx_t *mlx, mlx_image_t *image);
 
 #endif

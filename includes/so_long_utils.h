@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 10:29:58 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 14:35:52 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 10:33:55 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_walk
 
 // Random
 
-float		rand01();
+float		rand01(void);
 float		rand_minmax(float min, float max);
 
 // String

@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 10:30:12 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:51:41 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 15:10:42 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define TEXT_SIZE 20
 
 # define WALL_HEIGHT TILE_SIZE
-# define GUI_HEIGHT (TILE_SIZE * 3) + (TILE_SIZE * 0.5) 
+# define GUI_HEIGHT 112
 
 # include "MLX42/MLX42.h"
 # include "so_long_utils.h"
@@ -68,6 +68,7 @@ typedef struct s_context
 	t_list		*position_hooks;
 	t_list		*animatables;
 	t_list		*enemies;
+	t_list		*effects;
 	t_list		*text;
 	t_player	*player;
 	int			collectables;
@@ -101,15 +102,32 @@ void			end_game(const char *message, t_context *gc);
 bool			load_map_into_context(t_context *gc, char **data);
 void			unload_map(t_context *gc);
 
+bool			is_key_pressed(t_keyinput key, mlx_key_data_t data);
+t_vector2		get_walk_direction_from_input(mlx_key_data_t data);
+
 bool			load_player(t_context *gc, t_vector2 world_position);
 void			unload_player(t_context *gc);
 
 bool			load_user_interface(t_context *gc);
+bool			place_number(t_context *gc, const char *name, int x, int y);
+bool			place_text(t_context *gc, const char *text, int margin);
 
 void			render_player(void *context);
+
 void			render_goblins(void *context);
+void			update_goblin_walk_animation(t_context *gc, int map_x, \
+int map_y);
+void			render_goblin_animation(t_context *gc, int map_x, int map_y);
+
 void			render_slimes(void *context);
+void			update_slime_walk_animation(t_context *gc, int map_x, \
+int map_y);
+void			render_slime_animation(t_context *gc, int map_x, int map_y);
+
 void			render_flies(void *context);
+void			update_fly_walk_animation(t_context *gc, int map_x, int map_y);
+void			render_fly_animation(t_context *gc, int map_x, int map_y);
+
 void			handle_player_input(mlx_key_data_t keydata, void *context);
 void			handle_player_collision(t_collision collider, t_context *gc);
 
@@ -117,18 +135,23 @@ bool			player_collision_hook(t_context *gc, t_collision_hook hook);
 bool			player_position_hook(t_context *gc, t_position_hook hook);
 void			invoke_player_collision(t_collision collider, t_context *gc);
 
-bool			walks_into_closed_exit(t_context *gc, t_vector2 pos, t_vector2 walk_direction);
-bool			walks_into_wall(t_context *gc, t_vector2 pos, t_vector2 walk_direction);
-bool			walks_into_enemy(t_context *gc, t_vector2 world_xy, t_vector2 direction);
+bool			walks_into_closed_exit(t_context *gc, t_vector2 map_xy, \
+t_vector2 walk_direction);
+bool			walks_into_wall(t_context *gc, t_vector2 map_xy, \
+t_vector2 walk_direction);
+bool			walks_into_enemy(t_context *gc, t_vector2 world_xy, \
+t_vector2 direction);
 bool			is_invalid_direction(t_vector2 walk_direction);
 t_vector2		get_random_direction(t_map *map, t_vector2 map_xy);
-t_vector2		get_random_direction_walls_ignored(t_map *map, t_vector2 map_xy);
+t_vector2		get_random_direction_walls_ignored(t_map *map, \
+t_vector2 map_xy);
 
 void			update_player_collectables(t_context *gc);
 void			update_player_position(t_context *gc);
 void			update_player_enemy_collision(t_context *gc);
 void			update_player_steps_ui(t_context *gc);
 
-mlx_instance_t	*get_collider(t_player *p, mlx_instance_t **b, int c, int d);
+mlx_instance_t	*get_collider(t_player *player, \
+mlx_instance_t **instance_buffer, int instance_count, int squared_distance);
 
 #endif

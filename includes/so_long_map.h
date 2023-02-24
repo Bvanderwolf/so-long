@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 10:28:43 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:49:54 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 14:32:01 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "so_long_utils.h"
 # include "so_long.h"
 # include "so_long_img.h"
+# include "so_long_anim.h"
 # include <stdbool.h>
 
 # define FLOOR_CHARS "0PCGSF"
@@ -55,6 +56,10 @@ bool		load_enemies(t_context *gc);
 bool		load_torch_props(t_context *gc);
 bool		load_player_ending(t_context *gc);
 
+t_enemy		*load_slime(t_context *gc, int map_x, int map_y);
+t_enemy		*load_goblin(t_context *gc, int map_x, int map_y);
+t_enemy		*load_fly(t_context *gc, int map_x, int map_y);
+
 mlx_image_t	*get_roof_image(t_context *gc, int x, int y);
 mlx_image_t	*get_roof_top_corner_image(t_context *gc, int x, int y);
 
@@ -79,7 +84,7 @@ bool		is_closet_wall(t_map *map, int x, int y);
 bool		is_short_table(t_map *map, int x, int y);
 bool		is_long_table_left(t_map *map, int x, int y);
 bool		is_long_table_right(t_map *map, int x, int y);
-bool 		is_banner(t_map *map, int x, int y);
+bool		is_banner(t_map *map, int x, int y);
 bool		is_torch(t_map *map, int x, int y);
 
 t_vector2	find_map_position(char **map, char c);
@@ -107,6 +112,7 @@ bool		is_not_wall_or_nl(int c);
 
 // Path finding
 
-bool		has_path(char **map, t_vector2 s, t_vector2 p, t_vector2 t);
+bool		has_path(char **map, t_vector2 size, t_vector2 start, \
+t_vector2 end);
 
 #endif

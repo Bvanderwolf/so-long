@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/28 10:08:09 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:47:48 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 14:05:46 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #include "so_long_map.h"
 #include <stdbool.h>
 
+static void	set_prop_info(t_context *gc, char *name, t_vector2 offset, \
+t_prop_info *info)
+{
+	info->img = find_image(gc->images, name);
+	info->offset = offset;
+}
+
 static t_prop_info	get_wall_prop_info(t_context *gc, int x, int y)
 {
 	t_prop_info		info;
@@ -22,28 +29,23 @@ static t_prop_info	get_wall_prop_info(t_context *gc, int x, int y)
 
 	if (is_closet_wall(map, x, y))
 	{
-		info.img = find_image(gc->images, IMG_CLOSET_WALL);
-		info.offset = vector2_new(0, -15);
+		set_prop_info(gc, IMG_CLOSET_WALL, vector2_new(0, -15), &info);
 	}
 	else if (is_long_table_left(map, x, y))
 	{
-		info.img = find_image(gc->images, IMG_LONG_TABLE_WALL_LEFT);
-		info.offset = vector2_new(0, 2);
+		set_prop_info(gc, IMG_LONG_TABLE_WALL_LEFT, vector2_new(0, 2), &info);
 	}
 	else if (is_long_table_right(map, x, y))
 	{
-		info.img = find_image(gc->images, IMG_LONG_TABLE_WALL_RIGHT);
-		info.offset = vector2_new(0, 2);
+		set_prop_info(gc, IMG_LONG_TABLE_WALL_RIGHT, vector2_new(0, 2), &info);
 	}
 	else if (is_short_table(map, x, y))
 	{
-		info.img = find_image(gc->images, IMG_SHORT_TABLE_WALL);
-		info.offset = vector2_new(0, 2);
+		set_prop_info(gc, IMG_SHORT_TABLE_WALL, vector2_new(0, 2), &info);
 	}
 	else
 	{
-		info.img = find_image(gc->images, IMG_KEG_WALL);
-		info.offset = vector2_new(0, 0);
+		set_prop_info(gc, IMG_KEG_WALL, vector2_new(0, 0), &info);
 	}
 	return (info);
 }

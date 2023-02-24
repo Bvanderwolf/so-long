@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/05 15:19:42 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:53:41 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 11:09:56 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,23 @@
 #include "libft.h"
 #include "MLX42/MLX42.h"
 
-t_list	*create_animations(t_context *gc, const char *tex_names[], float speed)
+t_list	*create_animations(t_context *gc, const char *paths[], float speed)
 {
-	int		i;
-	t_animation	*anim;
-	t_list	*list_head;
-	t_list	*list_new;
+	int			i;
+	t_animation	*animation;
+	t_list		*list_head;
+	t_list		*list_new;
 
 	i = 0;
 	list_head = NULL;
-	while (tex_names[i] != NULL)
+	while (paths[i] != NULL)
 	{
-		anim = create_animation(gc, tex_names[i], speed);
-		if (anim == NULL)
+		animation = create_animation(gc, paths[i], speed);
+		if (animation == NULL)
 			return (ft_lstclear(&list_head, &free), NULL);
-		list_new = ft_lstnew(anim);
+		list_new = ft_lstnew(animation);
 		if (list_new == NULL)
-			return (free(anim), ft_lstclear(&list_head, &free), NULL);
+			return (free(animation), ft_lstclear(&list_head, &free), NULL);
 		ft_lstadd_back(&list_head, list_new);
 		i++;
 	}

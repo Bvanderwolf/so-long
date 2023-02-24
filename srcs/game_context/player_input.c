@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/08 14:57:52 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 16:00:07 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 11:58:19 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "ft_printf.h"
-
-static bool	is_key_pressed(t_keyinput key, mlx_key_data_t data)
+static void	handle_follow_up_walk(t_context *gc, t_walk *walk, \
+t_walk *target_walk, t_vector2 walk_direction)
 {
-	if (key == KEY_UP)
-		return (data.key == MLX_KEY_W || data.key == MLX_KEY_UP);
-	if (key == KEY_LEFT)
-		return (data.key == MLX_KEY_A || data.key == MLX_KEY_LEFT);
-	if (key == KEY_DOWN)
-		return (data.key == MLX_KEY_S || data.key == MLX_KEY_DOWN);
-	if (key == KEY_RIGHT)
-		return (data.key == MLX_KEY_D || data.key == MLX_KEY_RIGHT);
-	return (false);
-}
+	t_vector2	target_map_xy;
 
-static t_vector2	get_walk_direction_from_input(mlx_key_data_t data)
-{
-	if (is_key_pressed(KEY_RIGHT, data) && data.action != MLX_PRESS)
-		return (vector2_new(1, 0));
-	if (is_key_pressed(KEY_LEFT, data) && data.action != MLX_PRESS)
-		return (vector2_new(-1, 0));
-	if (is_key_pressed(KEY_DOWN, data) && data.action != MLX_PRESS)
-		return (vector2_new(0, 1));
-	if (is_key_pressed(KEY_UP, data) && data.action != MLX_PRESS)
-		return (vector2_new(0, -1));
-	return (vector2_new(0, 0));
+	target_map_xy = world_to_map_position(walk->target_world_xy);
+	if (walks_into_wall(gc, target_map_xy, walk_direction)
+		|| walks_into_closed_exit(gc, target_map_xy, walk_direction))
+		return ;
+	if (vector2_equals(target_walk->target_world_xy, walk->target_world_xy))
+		walk_set_target(target_walk, walk_direction, walk->target_world_xy);
 }
 
 static void	handle_movement_input(t_context *gc, mlx_key_data_t keydata)
@@ -57,11 +42,7 @@ static void	handle_movement_input(t_context *gc, mlx_key_data_t keydata)
 		return ;
 	if (walk_is_active(walk))
 	{
-		if (walks_into_wall(gc, world_to_map_position(walk->target_world_xy), walk_direction)
-			|| walks_into_closed_exit(gc, world_to_map_position(walk->target_world_xy), walk_direction))
-			return ;
-		if (vector2_equals(target_walk->target_world_xy, walk->target_world_xy))
-			walk_set_target(target_walk, walk_direction, walk->target_world_xy);
+		handle_follow_up_walk(gc, walk, target_walk, walk_direction);
 	}
 	else
 	{
@@ -70,7 +51,8 @@ static void	handle_movement_input(t_context *gc, mlx_key_data_t keydata)
 			return ;
 		walk_set_target(walk, walk_direction, gc->player->world_xy);
 		walk_set_target(target_walk, walk_direction, gc->player->world_xy);
-		if (vector2_equals_xy(walk_direction, 1, 0) || vector2_equals_xy(walk_direction, -1, 0))
+		if (vector2_equals_xy(walk_direction, 1, 0)
+			|| vector2_equals_xy(walk_direction, -1, 0))
 			gc->player->look_direction = walk_direction;
 	}
 }

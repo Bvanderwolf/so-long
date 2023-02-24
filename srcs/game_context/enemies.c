@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/11 12:19:51 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/11 16:30:27 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 11:18:11 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,17 @@
 #include "so_long_anim.h"
 #include "so_long_map.h"
 
-// *Note to self: look_direction is now always vector2.right. this should be 
+// *Note to self: look_direction is now always vector2.right. this should be
 // based on the walls around the enemy.
-t_enemy	*create_enemy(t_context *gc, t_vector2 map_xy, float decision_time, float animation_speed, const char *tex_names[])
+t_enemy	*create_enemy(t_context *gc, t_vector2 map_xy, \
+t_animatable *animatable, float decision_time)
 {
 	t_enemy			*enemy;
-	t_animatable	*animatable;
 	t_list			*animatable_item;
 
 	enemy = (t_enemy *)malloc(sizeof(t_enemy));
 	if (enemy == NULL)
 		return (NULL);
-	animatable = create_animatable(gc, map_xy, animation_speed, tex_names);
-	if (animatable == NULL)
-		return (free(enemy), NULL);
 	animatable_item = ft_lstnew(animatable);
 	if (animatable_item == NULL)
 		return (free(enemy), free(animatable), NULL);

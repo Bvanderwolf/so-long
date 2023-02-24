@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/28 10:27:09 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:45:38 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:48:56 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,23 @@ static bool	img_load_torch(t_context *gc)
 	return (true);
 }
 
-bool	load_prop_images(t_context *gc, mlx_texture_t *tex)
+bool	load_prop_images(t_context *gc, mlx_texture_t *texture)
 {
-	if (!load_tile(gc, tex, 2, IMG_KEG_WALL))
+	if (!load_tile(gc, texture, 2, IMG_KEG_WALL))
 		return (false);
-	if (!load_tile(gc, tex, 3, IMG_CLOSET_WALL))
+	if (!load_tile(gc, texture, 3, IMG_CLOSET_WALL))
 		return (false);
-	if (!load_tile(gc, tex, 15, IMG_SHORT_TABLE_WALL))
+	if (!load_tile(gc, texture, 15, IMG_SHORT_TABLE_WALL))
 		return (false);
-	if (!load_tile(gc, tex, 10, IMG_LONG_TABLE_WALL_LEFT))
+	if (!load_tile(gc, texture, 10, IMG_LONG_TABLE_WALL_LEFT))
 		return (false);
-	if (!load_tile(gc, tex, 11, IMG_LONG_TABLE_WALL_RIGHT))
+	if (!load_tile(gc, texture, 11, IMG_LONG_TABLE_WALL_RIGHT))
 		return (false);
-	if (!load_tile(gc, tex, 4, IMG_BANNER_GREEN))
+	if (!load_tile(gc, texture, 4, IMG_BANNER_GREEN))
 		return (false);
-	if (!load_tile(gc, tex, 5, IMG_BANNER_RED))
+	if (!load_tile(gc, texture, 5, IMG_BANNER_RED))
 		return (false);
-	if (!load_tile(gc, tex, 14, IMG_BANNER_SKELETON))
+	if (!load_tile(gc, texture, 14, IMG_BANNER_SKELETON))
 		return (false);
 	if (!img_load_torch(gc))
 		return (false);

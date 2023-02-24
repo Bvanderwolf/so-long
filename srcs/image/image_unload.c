@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/05 10:33:34 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/01/27 14:42:50 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 10:29:57 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	unload_images(t_context *gc, t_img_unload unload)
 	ft_lstclear(&(gc->images), &free);
 }
 
-void	free_mlx_img(mlx_t *mlx, mlx_image_t *img)
+void	free_mlx_img(mlx_t *mlx, mlx_image_t *image)
 {
 	(void)mlx;
-	free(img);
+	free(image);
 }

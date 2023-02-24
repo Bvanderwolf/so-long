@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/09 12:02:09 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/09 12:11:43 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 13:01:59 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ bool	assert_rectangular(char **map)
 
 bool	assert_wall_boxing(char **map)
 {
+	const int	map_max_x = ft_strtlen(map[0], '\n') - 1;
+	const int	map_max_y = str_arr_len(map) - 1;
+
 	if (strchr_pred(map[0], &is_not_wall_or_nl))
 	{
 		ft_printf(MISSING_WALL_MSG, "top");
@@ -47,12 +50,12 @@ bool	assert_wall_boxing(char **map)
 		ft_printf(MISSING_WALL_MSG, "left");
 		return (false);
 	}
-	if (str_arr_chr_pred(map, ft_strtlen(map[0], '\n') - 1, &is_not_wall_or_nl))
+	if (str_arr_chr_pred(map, map_max_x, &is_not_wall_or_nl))
 	{
 		ft_printf(MISSING_WALL_MSG, "right");
 		return (false);
 	}
-	if (strchr_pred(map[str_arr_len(map) - 1], &is_not_wall_or_nl))
+	if (strchr_pred(map[map_max_y], &is_not_wall_or_nl))
 	{
 		ft_printf(MISSING_WALL_MSG, "bottom");
 		return (false);
@@ -71,7 +74,8 @@ bool	assert_no_invalid_chars(char **map)
 		x = 0;
 		while (map[y][x] != '\0')
 		{
-			if (map[y][x] != '\n' && ft_strchr(VALID_MAP_CHARS, map[y][x]) == NULL)
+			if (map[y][x] != '\n'
+				&& ft_strchr(VALID_MAP_CHARS, map[y][x]) == NULL)
 				return (ft_printf(INVALID_MAP_CHAR, map[y][x]), false);
 			x++;
 		}

@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/05 10:30:45 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:43:42 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 12:57:29 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ const char	*image_path_to_name(const char *path)
 // mlx_texture_area_to_image function based on the number
 // of the image, counting (from 1) from the top left to 
 // bottom right.
-t_vector2	number_coordinates(mlx_texture_t *tex, int num, int size)
+t_vector2	number_coordinates(mlx_texture_t *texture, int number, int size)
 {
 	int	x;
 	int	y;
 	int	x_tiles;
 
-	x_tiles = tex->width / size;
-	if (num <= x_tiles)
-		return (vector2_new((num - 1) * size, 0));
+	x_tiles = texture->width / size;
+	if (number <= x_tiles)
+		return (vector2_new((number - 1) * size, 0));
 	y = 0;
-	x = num - 1;
+	x = number - 1;
 	while (x >= x_tiles)
 	{
 		x -= x_tiles;
@@ -51,18 +51,20 @@ t_vector2	number_coordinates(mlx_texture_t *tex, int num, int size)
 	return (vector2_new(x * size, y * size));
 }
 
-t_image	*load_img_number(mlx_t *mlx, mlx_texture_t *tex, int num, int size)
+t_image	*load_img_number(mlx_t *mlx, mlx_texture_t *texture, int number, \
+int size)
 {
 	t_vector2	coordinates;
 	uint32_t	xy[2];
 
-	coordinates = number_coordinates(tex, num, size);
+	coordinates = number_coordinates(texture, number, size);
 	xy[0] = coordinates.x;
 	xy[1] = coordinates.y;
-	return (load_img_xy(mlx, tex, xy, size));
+	return (load_img_xy(mlx, texture, xy, size));
 }
 
-t_image	*load_img_xy(mlx_t *mlx, mlx_texture_t *tex, uint32_t xy[2], int size)
+t_image	*load_img_xy(mlx_t *mlx, mlx_texture_t *texture, uint32_t xy[2], \
+int size)
 {
 	uint32_t		tile_width_height[2];
 	mlx_image_t		*mlx_img;
@@ -70,7 +72,7 @@ t_image	*load_img_xy(mlx_t *mlx, mlx_texture_t *tex, uint32_t xy[2], int size)
 
 	tile_width_height[0] = size;
 	tile_width_height[1] = size;
-	mlx_img = mlx_texture_area_to_image(mlx, tex, xy, tile_width_height);
+	mlx_img = mlx_texture_area_to_image(mlx, texture, xy, tile_width_height);
 	if (mlx_img == NULL)
 		return (ft_printf("Failed to create image from texture\n"), NULL);
 	img = (t_image *)ft_calloc(1, sizeof(t_image));
@@ -85,9 +87,9 @@ t_image	*load_img_xy(mlx_t *mlx, mlx_texture_t *tex, uint32_t xy[2], int size)
 }
 
 // Loads images from a linear sprite sheet into game context where "name"
-// is the name of the sheet, "t" the texture of the sheet en "l" the amount
-// of images.
-bool	load_tile_sheet(t_context *gc, const char *name, mlx_texture_t *t, int l)
+// is the name of the sheet.
+bool	load_tile_sheet(t_context *gc, const char *name, \
+mlx_texture_t *texture, int sheet_length)
 {
 	char			img_name[MAX_IMG_NAME_SIZE];
 	int				i;
@@ -97,10 +99,10 @@ bool	load_tile_sheet(t_context *gc, const char *name, mlx_texture_t *t, int l)
 
 	i = 0;
 	sequence_name(name, img_name, i, &name_len);
-	while (i < l)
+	while (i < sheet_length)
 	{
 		img_name[name_len] = (i + '0');
-		img = load_img_number(gc->mlx, t, (i + 1), TILE_SIZE);
+		img = load_img_number(gc->mlx, texture, (i + 1), TILE_SIZE);
 		if (img == NULL)
 			return (unload_images(gc, &free_mlx_img), false);
 		ft_strcpy(img->name, img_name);

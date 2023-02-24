@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/08 15:33:48 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:59:48 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 11:12:22 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,39 @@
 #include "so_long_anim.h"
 #include "ft_printf.h"
 
-bool	is_disabled_animation(t_animation *anim)
+bool	is_disabled_animation(t_animation *animation)
 {
 	int	i;
 
 	i = 0;
-	while (anim->images[i] != NULL)
+	while (animation->images[i] != NULL)
 	{
-		if (anim->images[i]->instances[anim->instance_index].enabled)
+		if (animation->images[i]->instances[animation->instance_index].enabled)
 			return (false);
 		i++;
 	}
 	return (true);
 }
 
-int	get_animation_frame(t_animation *anim)
+int	get_animation_frame(t_animation *animation)
 {
-	return ((((int)((mlx_get_time() - anim->start_time) / (ANIM_DELTA / anim->speed))) % anim->frame_count));
+	const double	time = mlx_get_time() - animation->start_time;
+	const float		delta = ANIM_DELTA / animation->speed;
+
+	return ((((int)((time) / (delta))) % animation->frame_count));
 }
 
-void	append_animation_suffix(t_vector2 dir, const char *prefix, char name[])
+void	append_animation_suffix(t_vector2 direction, const char *prefix, \
+char name[])
 {
 	ft_strcpy(name, prefix);
-	if (vector2_equals_xy(dir, 1, 0))
+	if (vector2_equals_xy(direction, 1, 0))
 		ft_strlcat(name, "_right.png", MAX_IMG_NAME_SIZE);
-	else if (vector2_equals_xy(dir, -1, 0))
+	else if (vector2_equals_xy(direction, -1, 0))
 		ft_strlcat(name, "_left.png", MAX_IMG_NAME_SIZE);
 }
 
-int	get_animation_seq(t_context *gc, const char *name, mlx_image_t *seq[])
+int	get_animation_seq(t_context *gc, const char *name, mlx_image_t *sequence[])
 {
 	int			i;
 	size_t		name_len;
@@ -54,15 +58,15 @@ int	get_animation_seq(t_context *gc, const char *name, mlx_image_t *seq[])
 	i = 0;
 	sequence_name(name, img_name, i, &name_len);
 	img = find_mlx_image(gc->images, img_name);
-	seq[i] = img;
+	sequence[i] = img;
 	while (img != NULL)
 	{
 		i++;
 		img_name[name_len] = (i + '0');
 		img = find_mlx_image(gc->images, img_name);
 		if (img != NULL)
-			seq[i] = img;
+			sequence[i] = img;
 	}
-	seq[i] = NULL;
+	sequence[i] = NULL;
 	return (i);
 }

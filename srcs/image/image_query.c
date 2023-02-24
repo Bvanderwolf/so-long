@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/05 10:26:40 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:40:34 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 10:25:45 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #include "ft_printf.h"
 #include "libft.h"
 
-void	sequence_name(const char *name, char *it_name, int start_i, size_t *len)
+void	sequence_name(const char *base, char *name, int i, size_t *length)
 {
-	*len = ft_strlen(name);
-	ft_strcpy(it_name, name);
-	it_name[*len] = (start_i + '0');
-	it_name[*len + 1] = '\0';
+	*length = ft_strlen(base);
+	ft_strcpy(name, base);
+	name[*length] = (i + '0');
+	name[*length + 1] = '\0';
 }
 
 t_image	*find_image(t_list *images, char *name)

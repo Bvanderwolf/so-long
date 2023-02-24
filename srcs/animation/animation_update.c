@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/08 15:35:42 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/18 17:30:30 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/23 11:15:02 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,24 @@
 
 void	animation_enable(t_animation *animation)
 {
-	int	frame;
+	int			frame;
+	mlx_image_t	*image;
 
 	frame = get_animation_frame(animation);
-	(&(animation->images[frame]->instances[animation->instance_index]))->enabled = true;
+	image = animation->images[frame];
+	(&(image->instances[animation->instance_index]))->enabled = true;
 }
 
 void	animation_disable(t_animation *animation)
 {
-	int	i;
+	int			i;
+	mlx_image_t	*image;
 
 	i = 0;
 	while (i < animation->frame_count)
 	{
-		(&(animation->images[i]->instances[animation->instance_index]))->enabled = false;
+		image = animation->images[i];
+		(&(image->instances[animation->instance_index]))->enabled = false;
 		i++;
 	}
 }
@@ -40,28 +44,35 @@ void	animation_disable(t_animation *animation)
 // with enemies which have multiple instances of their image in the game.
 // Possible update: instead of having seq be an array of mlx_image_t let 
 // it be an array of mlx_instance_t.
-void	update_animation_position(t_animation *anim, t_vector2 new_position)
+void	update_animation_position(t_animation *animation, \
+t_vector2 new_position)
 {
-	int	i;
+	int			i;
+	mlx_image_t	*image;
 
 	i = 0;
-	while (anim->images[i] != NULL)
+	while (animation->images[i] != NULL)
 	{
-		(&(anim->images[i]->instances[anim->instance_index]))->x = new_position.x;
-		(&(anim->images[i]->instances[anim->instance_index]))->y = new_position.y;
+		image = animation->images[i];
+		(&(image->instances[animation->instance_index]))->x = new_position.x;
+		(&(image->instances[animation->instance_index]))->y = new_position.y;
 		i++;
 	}
 }
 
-void	update_animation_image(t_animation *anim)
+void	update_animation_image(t_animation *animation)
 {
-	int	new_frame;
+	int			new_frame;
+	mlx_image_t	*image;
+	mlx_image_t	*new_image;
 
-	new_frame = get_animation_frame(anim);
-	if (new_frame != anim->frame)
+	new_frame = get_animation_frame(animation);
+	if (new_frame != animation->frame)
 	{
-		(&(anim->images[anim->frame]->instances[anim->instance_index]))->enabled = false;
-		(&(anim->images[new_frame]->instances[anim->instance_index]))->enabled = true;
-		anim->frame = new_frame;
+		image = animation->images[animation->frame];
+		new_image = animation->images[new_frame];
+		(&(image->instances[animation->instance_index]))->enabled = false;
+		(&(new_image->instances[animation->instance_index]))->enabled = true;
+		animation->frame = new_frame;
 	}
 }
