@@ -25,13 +25,12 @@ _Thanks to [Leon](https://github.com/W2Wizard) and [Codam](https://www.codam.nl/
 
 | Map  | Game |
 | ------------- | ------------- |
-| ... | <img src="./readme/huge.png" width="960" height="540">  |
+| ... | <img src="./readme/huge.png" width="959" height="474">  |
 
 ## Gameplay
 
 The gameplay is generated based on a text file inputted when starting. Some text files for different use cases are already added to the "maps" folder but you are able to create your own according to the following rules:
 - The file has to have the .ber file extension
-- The map has to be constructed with 3 components: walls, collectibles, and free space.
 - The map has to be rectangular
 - The map can be composed of only these 8 characters:
   - 0 for an empty space,
