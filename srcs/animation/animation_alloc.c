@@ -6,7 +6,7 @@
 /*   By: bvan-der <bvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/08 15:32:22 by bvan-der      #+#    #+#                 */
-/*   Updated: 2023/02/23 11:09:14 by bvan-der      ########   odam.nl         */
+/*   Updated: 2023/02/26 12:45:55 by bvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,9 @@ t_animation	*create_animation(t_context *gc, const char *path, float speed)
 {
 	int			i;
 	int			frames;
-	mlx_image_t	*image;
 	mlx_image_t	*sequence[DEFAULT_ANIM_LEN + 1];
 
 	i = 0;
 	frames = get_animation_seq(gc, path, sequence);
-	while (sequence[i] != NULL)
-	{
-		image = sequence[i];
-		i++;
-	}
 	return (allocate_animation(path, sequence, frames, speed));
 }
